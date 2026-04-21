@@ -1,12 +1,47 @@
 export default function AppBar() {
   return (
-    <header className="flex items-center justify-between px-5 pt-4 pb-3">
-      <h1 className="text-xl font-semibold text-gray-900 tracking-tight">El Notas</h1>
-      <div className="flex items-center gap-2">
-        <span className="border border-violet-500 text-violet-600 text-xs font-medium px-3 py-0.5 rounded-full">
+    <header
+      className="flex items-center justify-between w-full"
+      style={{ padding: '8px 16px', fontFamily: "'Albert Sans', sans-serif" }}
+    >
+      {/* Logotipo */}
+      <span style={{ fontSize: '24px', fontWeight: 600, color: '#0D0D0D' }}>
+        El Notas
+      </span>
+
+      {/* Acciones derecha: Tag + Avatar */}
+      <div className="flex items-center" style={{ gap: '8px' }}>
+        {/* Tag Free */}
+        <span
+          style={{
+            fontFamily: "'Albert Sans', sans-serif",
+            fontSize: '14px',
+            fontWeight: 500,
+            color: '#7C3AED',
+            backgroundColor: '#EDE9FE',
+            borderRadius: '999px',
+            padding: '3px 12px',
+          }}
+        >
           Free
         </span>
-        <div className="w-9 h-9 rounded-full bg-amber-100 overflow-hidden flex items-center justify-center text-lg">
+
+        {/* Avatar */}
+        <div
+          style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '50%',
+            border: '4px solid #F6F6F6',
+            backgroundColor: '#E5E7EB',
+            overflow: 'hidden',
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '22px',
+          }}
+        >
           🧑‍🎨
         </div>
       </div>
