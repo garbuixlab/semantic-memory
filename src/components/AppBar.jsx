@@ -8,35 +8,48 @@ export default function AppBar() {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '8px 16px',
-        width: '100%',
+        backgroundColor: 'white',
         boxSizing: 'border-box',
+        minHeight: '64px',
       }}
     >
       {/* Logotipo */}
-      <span style={{ fontFamily: font, fontSize: '24px', fontWeight: 700, color: '#0D0D0D' }}>
+      <span
+        style={{
+          fontFamily: font,
+          fontSize: '24px',
+          fontWeight: 700,
+          color: '#171717',
+          letterSpacing: '-0.3px',
+        }}
+      >
         El Notas
       </span>
 
       {/* Acciones derecha */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {/* Tag Free */}
-        <span
-          style={{
-            fontFamily: font,
-            fontSize: '14px',
-            fontWeight: 700,
-            color: '#C99FFF',
-            backgroundColor: '#FAF5FF',
-            border: '1px solid #C99FFF',
-            borderRadius: '999px',
-            padding: '3px 12px',
-            lineHeight: 1.4,
-          }}
-        >
-          Free
-        </span>
 
-        {/* Avatar */}
+        {/* Tag Free — tap target 48px mínimo */}
+        <div style={{ minHeight: '48px', display: 'flex', alignItems: 'center' }}>
+          <span
+            style={{
+              fontFamily: font,
+              fontSize: '16px',
+              fontWeight: 700,
+              color: '#8427FF',
+              backgroundColor: '#F5F3FF',
+              border: '1px solid #C99FFF',
+              borderRadius: '999px',
+              padding: '4px 14px',
+              lineHeight: 1.4,
+              display: 'inline-block',
+            }}
+          >
+            Free
+          </span>
+        </div>
+
+        {/* Avatar — 48px + 4px border exterior */}
         <div
           style={{
             width: '48px',
@@ -50,7 +63,9 @@ export default function AppBar() {
             justifyContent: 'center',
             fontSize: '22px',
             overflow: 'hidden',
+            boxSizing: 'border-box',
           }}
+          aria-label="Avatar de l'usuari"
         >
           🧑‍🎨
         </div>

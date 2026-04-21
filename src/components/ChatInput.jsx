@@ -4,15 +4,21 @@ const font = "'Albert Sans', sans-serif"
 
 function FolderIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#404040" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="#404040" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
     </svg>
   )
 }
 
-function MicIcon({ color = '#404040' }) {
+function MicIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="#404040" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <rect x="9" y="2" width="6" height="12" rx="3" />
       <path d="M19 10a7 7 0 0 1-14 0" />
       <line x1="12" y1="19" x2="12" y2="22" />
@@ -21,9 +27,12 @@ function MicIcon({ color = '#404040' }) {
   )
 }
 
-function ArrowIcon() {
+function SendIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+      stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <line x1="5" y1="12" x2="19" y2="12" />
       <polyline points="12 5 19 12 12 19" />
     </svg>
@@ -43,22 +52,35 @@ export default function ChatInput({ value, onChange, onSend, onFocus, onBlur, is
   return (
     <div
       style={{
-        position: 'sticky',
+        position: 'fixed',
         bottom: 0,
-        backgroundColor: 'white',
+        left: 0,
+        right: 0,
+        maxWidth: '384px',     /* max-w-sm para coincidir con App */
+        margin: '0 auto',
         padding: '24px 16px',
+        backgroundColor: 'white',
         boxSizing: 'border-box',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
 
-        {/* Burbuja 1 — Carpeta (solo en estado pasivo) */}
-        {!isActive && (
+        {/* ── Burbuja 1: Carpeta ── animación de desaparición */}
+        <div
+          style={{
+            width: isActive ? '0px' : '64px',
+            minWidth: isActive ? '0px' : '64px',
+            opacity: isActive ? 0 : 1,
+            transform: isActive ? 'scale(0.95)' : 'scale(1)',
+            overflow: 'hidden',
+            transition: 'width 300ms ease-in-out, min-width 300ms ease-in-out, opacity 250ms ease-in-out, transform 250ms ease-in-out',
+          }}
+        >
           <button
+            aria-label="Obrir carpetes"
             style={{
-              width: '62px',
-              height: '62px',
-              minWidth: '62px',
+              width: '64px',
+              height: '64px',
               borderRadius: '50%',
               backgroundColor: '#F6F6F6',
               border: 'none',
@@ -66,13 +88,14 @@ export default function ChatInput({ value, onChange, onSend, onFocus, onBlur, is
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             <FolderIcon />
           </button>
-        )}
+        </div>
 
-        {/* Burbuja 2 — Input */}
+        {/* ── Burbuja 2: Input ── se expande al 100% */}
         <div
           style={{
             flex: 1,
@@ -80,8 +103,9 @@ export default function ChatInput({ value, onChange, onSend, onFocus, onBlur, is
             alignItems: 'center',
             backgroundColor: '#F6F6F6',
             borderRadius: '999px',
-            padding: '8px 16px',
-            gap: '8px',
+            padding: '8px 8px 8px 16px',
+            gap: '4px',
+            transition: 'all 300ms ease-in-out',
           }}
         >
           <input
@@ -93,22 +117,25 @@ export default function ChatInput({ value, onChange, onSend, onFocus, onBlur, is
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
             placeholder="Comenta'm, cari"
+            aria-label="Escriu un missatge"
             style={{
               flex: 1,
               border: 'none',
               outline: 'none',
               background: 'transparent',
               fontFamily: font,
-              fontSize: '14px',
-              color: '#0D0D0D',
+              fontSize: '16px',
+              color: '#171717',
+              minWidth: 0,
             }}
           />
 
-          {/* Icono Micrófono — área táctil 40×40 */}
+          {/* Micrófono — tap target 48×48 */}
           <button
+            aria-label="Dictar missatge"
             style={{
-              width: '40px',
-              height: '40px',
+              width: '48px',
+              height: '48px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -116,22 +143,33 @@ export default function ChatInput({ value, onChange, onSend, onFocus, onBlur, is
               background: 'transparent',
               cursor: 'pointer',
               flexShrink: 0,
+              borderRadius: '50%',
             }}
           >
-            <MicIcon color={isActive ? '#8427FF' : '#404040'} />
+            <MicIcon />
           </button>
 
-          {/* Botón Enviar — solo en estado activo */}
-          {isActive && (
+          {/* Botón Enviar — aparece en estado activo */}
+          <div
+            style={{
+              width: isActive ? '40px' : '0px',
+              height: '40px',
+              opacity: isActive ? 1 : 0,
+              transform: isActive ? 'scale(1)' : 'scale(0.8)',
+              overflow: 'hidden',
+              transition: 'width 300ms ease-in-out, opacity 250ms ease-in-out, transform 250ms ease-in-out',
+              flexShrink: 0,
+            }}
+          >
             <button
               onMouseDown={(e) => {
                 e.preventDefault()
                 if (value.trim()) onSend(value)
               }}
+              aria-label="Enviar missatge"
               style={{
-                width: '32px',
-                height: '32px',
-                minWidth: '32px',
+                width: '40px',
+                height: '40px',
                 borderRadius: '50%',
                 backgroundColor: '#8427FF',
                 border: 'none',
@@ -139,12 +177,11 @@ export default function ChatInput({ value, onChange, onSend, onFocus, onBlur, is
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                flexShrink: 0,
               }}
             >
-              <ArrowIcon />
+              <SendIcon />
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>

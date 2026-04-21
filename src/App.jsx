@@ -14,14 +14,8 @@ export default function App() {
 
   const handleSend = (text) => {
     if (!text.trim()) return
-
-    setMessages((prev) => [
-      ...prev,
-      { type: 'user', text },
-      { type: 'loading' },
-    ])
+    setMessages((prev) => [...prev, { type: 'user', text }, { type: 'loading' }])
     setInputValue('')
-
     setTimeout(() => {
       setMessages((prev) => [
         ...prev.filter((m) => m.type !== 'loading'),
@@ -31,10 +25,22 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-white max-w-sm mx-auto">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100dvh',          /* dvh para evitar el salto del browser bar en móvil */
+        backgroundColor: 'white',
+        maxWidth: '384px',
+        margin: '0 auto',
+        position: 'relative',
+      }}
+    >
+      {/* Header persistente */}
       <AppBar />
 
-      <div className="flex-1 overflow-y-auto">
+      {/* Área de scroll — pb-32 deja espacio para el footer fixed */}
+      <div style={{ flex: 1, overflowY: 'auto', paddingBottom: '136px' }}>
         {isEmpty ? (
           <EmptyState showChips={!inputFocused} onChipSelect={handleSend} />
         ) : (
@@ -42,8 +48,11 @@ export default function App() {
         )}
       </div>
 
+      {/* Chips flotantes sobre el footer cuando el input está activo */}
       {inputFocused && isEmpty && (
-        <SuggestionChips onSelect={(chip) => setInputValue(chip)} className="pb-1" />
+        <div style={{ position: 'fixed', bottom: '136px', left: 0, right: 0, maxWidth: '384px', margin: '0 auto' }}>
+          <SuggestionChips onSelect={(chip) => setInputValue(chip)} />
+        </div>
       )}
 
       <ChatInput
